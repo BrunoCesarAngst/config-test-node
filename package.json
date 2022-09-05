@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/BrunoCesarAngst/config-test-node/issues"
   },
-  "homepage": "https://github.com/BrunoCesarAngst/config-test-node#readme"
+  "homepage": "https://github.com/BrunoCesarAngst/config-test-node#readme",
+  "devDependencies": {
+    "git-commit-msg-linter": "^4.1.3"
+  }
 }
