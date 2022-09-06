@@ -23,25 +23,25 @@ class CreatingAPartRepositoryMock implements CreatingAPartRepository {
 describe('CreatingAPart', () => {
   it('Should create a new part station', () => {
     const creatingAPartRepository = new CreatingAPartRepositoryMock()
-    const creatingAPart = new CreatingAPart(creatingAPartRepository)
+    const sut = new CreatingAPart(creatingAPartRepository)
 
-    expect(creatingAPart).toBeInstanceOf(CreatingAPart)
+    expect(sut).toBeInstanceOf(CreatingAPart)
   })
 
   it('Should be called only once', async () => {
     const creatingAPartRepository = new CreatingAPartRepositoryMock()
-    const creatingAPart = new CreatingAPart(creatingAPartRepository)
+    const sut = new CreatingAPart(creatingAPartRepository)
 
-    await creatingAPart.create('part')
+    await sut.create('part')
 
     expect(creatingAPartRepository.callsCount).toBe(1)
   })
 
   it('Should create a new part', async () => {
     const creatingAPartRepository = new CreatingAPartRepositoryMock()
-    const creatingAPart = new CreatingAPart(creatingAPartRepository)
+    const sut = new CreatingAPart(creatingAPartRepository)
 
-    await creatingAPart.create('part')
+    await sut.create('part')
 
     expect(creatingAPartRepository.part).toBe('part')
   })
