@@ -1,4 +1,3 @@
-
 class CreatingAPart {
   constructor (private readonly creatingAPartRepository: CreatingAPartRepository) {}
 
@@ -13,9 +12,11 @@ interface CreatingAPartRepository {
 
 class CreatingAPartRepositoryMock implements CreatingAPartRepository {
   part?: string
+  callsCount =  0
 
   async create (part: string): Promise<void> {
     this.part = part
+    this.callsCount++
   }
 }
 
@@ -25,6 +26,15 @@ describe('CreatingAPart', () => {
     const creatingAPart = new CreatingAPart(creatingAPartRepository)
 
     expect(creatingAPart).toBeInstanceOf(CreatingAPart)
+  })
+
+  it('Should be called only once', async () => {
+    const creatingAPartRepository = new CreatingAPartRepositoryMock()
+    const creatingAPart = new CreatingAPart(creatingAPartRepository)
+
+    await creatingAPart.create('part')
+
+    expect(creatingAPartRepository.callsCount).toBe(1)
   })
 
   it('Should create a new part', async () => {
