@@ -19,6 +19,14 @@ export class SubmitPartUsecase {
   async execute (dataPart: ISubmitPartUsecase): Promise<void> {
     const { name, description } = dataPart
 
+    if (!name) {
+      throw new Error('Name is required')
+    }
+
+    if (!description) {
+      throw new Error('Name is required')
+    }
+
     await this.submitPartRepository.create({
       name,
       description
@@ -58,5 +66,19 @@ describe('SubmitPartUsecase', (): void => {
       name: 'test',
       description: 'test description'
     })).resolves.not.toThrow()
+  })
+
+  it('Should not be able to create a part without name', async (): Promise<void> => {
+    await expect(submitPartUsecase.execute({
+      name: '',
+      description: 'test description'
+    })).rejects.toThrow()
+  })
+
+  it('Should not be able to create a part without description', async (): Promise<void> => {
+    await expect(submitPartUsecase.execute({
+      name: 'test',
+      description: ''
+    })).rejects.toThrow()
   })
 })
