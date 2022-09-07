@@ -1,12 +1,17 @@
-class CreatingAPart {
+interface IPart {
   name: string
+  description: string
+}
+
+class CreatingAPart {
+  thePart: IPart
 
   constructor (
     private readonly creatingAPartRepository: CreatingAPartRepository,
-    name: string
-    ) {
-      this.name = name
-    }
+    thePart: IPart
+  ) {
+    this.thePart = thePart
+  }
 
   async create (part: string): Promise<void> {
     await this.creatingAPartRepository.create(part)
@@ -15,14 +20,14 @@ class CreatingAPart {
 
 interface CreatingAPartRepository {
   create: (part: string) => Promise<void>
-  name?: string
-  
+  thePart: IPart
+
 }
 
 class CreatingAPartRepositoryMock implements CreatingAPartRepository {
   part?: string
-  callsCount =  0
-  name?: string
+  callsCount = 0
+  thePart: IPart
 
   async create (part: string): Promise<void> {
     this.part = part
@@ -31,16 +36,22 @@ class CreatingAPartRepositoryMock implements CreatingAPartRepository {
 }
 
 describe('CreatingAPart', () => {
+
+  const aPart: IPart = {
+    name: 'test',
+    description: 'test description',
+  }
+  
   it('Should create a new part station', () => {
     const creatingAPartRepository = new CreatingAPartRepositoryMock()
-    const sut = new CreatingAPart(creatingAPartRepository, '')
+    const sut = new CreatingAPart(creatingAPartRepository, aPart)
 
     expect(sut).toBeInstanceOf(CreatingAPart)
   })
 
   it('Should be called only once', async () => {
     const creatingAPartRepository = new CreatingAPartRepositoryMock()
-    const sut = new CreatingAPart(creatingAPartRepository, '')
+    const sut = new CreatingAPart(creatingAPartRepository, aPart)
 
     await sut.create('part')
 
@@ -49,7 +60,7 @@ describe('CreatingAPart', () => {
 
   it('Should create a new part', async () => {
     const creatingAPartRepository = new CreatingAPartRepositoryMock()
-    const sut = new CreatingAPart(creatingAPartRepository, '')
+    const sut = new CreatingAPart(creatingAPartRepository, aPart)
 
     await sut.create('part')
 
