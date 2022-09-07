@@ -1,57 +1,62 @@
+import { prisma } from '../src/prisma'
+
 export interface ISubmitPartUsecase {
   name: string
   description: string
 }
 
+export interface ISubmitPartRepository {
+  create: (dataPart: ISubmitPartUsecase) => Promise<void>
+}
+
+export class SubmitPartRepository implements ISubmitPartRepository {
+  async create (dataPart: ISubmitPartUsecase): Promise<void> {}
+}
+
 export class SubmitPartUsecase {
-  callCounts = 0
   constructor (private readonly submitPartRepository: ISubmitPartRepository) {}
 
-  async execute ({ name, description }: ISubmitPartUsecase): Promise<ISubmitPartUsecase> {
-    this.callCounts++
-    return await this.submitPartRepository.create({ name, description })
-  }
-}
+  async execute (dataPart: ISubmitPartUsecase): Promise<void> {
+    const { name, description } = dataPart
 
-export interface ISubmitPartRepository {
-  create: (dataPart: ISubmitPartUsecase) => Promise<ISubmitPartUsecase>
-}
-
-export class SubmitPartRepositoryMock implements ISubmitPartRepository {
-  async create ({ name, description }: ISubmitPartUsecase): Promise<ISubmitPartUsecase> {
-    return {
+    await this.submitPartRepository.create({
       name,
       description
-    }
+    })
   }
 }
 
-describe('SubmitPartUsecase', () => {
-  it('Should be able to create a part', async () => {
-    const submitPartRepository = new SubmitPartRepositoryMock()
-    const sut = new SubmitPartUsecase(submitPartRepository)
-    const aPart: ISubmitPartUsecase = {
+export class PrismaPartRepository implements ISubmitPartRepository {
+  async create ({ name, description }: ISubmitPartUsecase): Promise<void> {
+    await prisma.parts.create({
+      data: {
+        name,
+        description
+      }
+    })
+  }
+}
+
+const createPartSpy = jest.fn()
+
+const submitPartUsecase = new SubmitPartUsecase(
+  { create: createPartSpy }
+)
+
+describe('SubmitPartUsecase', (): void => {
+  it('Should be called', async (): Promise<void> => {
+    await submitPartUsecase.execute({
       name: 'test',
       description: 'test description'
-    }
+    })
 
-    // expect((await sut.execute(aPart)))
-    //   .toEqual((await submitPartRepository.create(aPart)))
-    expect((await sut.execute(aPart))).toEqual(aPart)
-    expect(aPart).toEqual((await submitPartRepository.create(aPart)))
+    expect(createPartSpy).toHaveBeenCalled()
   })
 
-  it('Should be activated once per call', async () => {
-    const submitPartRepository = new SubmitPartRepositoryMock()
-    const sut = new SubmitPartUsecase(submitPartRepository)
-    const aPart: ISubmitPartUsecase = {
+  it('Should be able to create an error-free piece', async (): Promise<void> => {
+    await expect(submitPartUsecase.execute({
       name: 'test',
       description: 'test description'
-    }
-
-    await sut.execute(aPart)
-    await submitPartRepository.create(aPart)
-
-    expect((sut.callCounts)).toBe(1)
+    })).resolves.not.toThrow()
   })
 })
