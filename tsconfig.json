@@ -16,7 +16,7 @@
 
     "incremental": true,
     "outDir": "dist",
-    "rootDirs": ["src", "tests"],
+    "rootDirs": ["src", "src/tests"],
     "sourceMap": true,
     "baseUrl": "src",
     "paths": { "@/*": ["*"], "@/tests/*": ["../tests/*"]},
