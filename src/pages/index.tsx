@@ -17,25 +17,35 @@ interface PostProps {
 }
 
 const Home = ({ parts }: PostProps) => {
+  const [name, setName] = useState('')
   const [description, setDescription] = useState('')
 
   const handleClick = async () => {
     await fetch('/api/parts', {
       method: 'POST',
-      body: JSON.parse(JSON.stringify(parts))
+      body: JSON.stringify({name, description})
     })
   }
+
+  console.log({name, description})
 
   return (
     <div className="h-screen bg-gray-500">
       <nav className="flex justify-center p-4 bg-gray-600">
-        <h1 className="text-white text-2xl font-bold">Todo App</h1>
+        <h1 className="text-white text-2xl font-bold">Parts App</h1>
       </nav>
       <div>
         <form className="flex justify-center mt-10">
           <div className="bg-gray-50 p-8 rounded-lg">
-            <h1 className="text-center mb-4">Write Todo List</h1>
+            <h1 className="text-center mb-4">Write Part List</h1>
             <div className="flex space-x-2 p-2 bg-white rounded-md">
+              <input
+                value={name}
+                onChange={(e) => setName(e.currentTarget.value)}
+                type="text"
+                placeholder="Write here..."
+                className="w-full outline-none"
+              />
               <input
                 value={description}
                 onChange={(e) => setDescription(e.currentTarget.value)}
@@ -46,7 +56,7 @@ const Home = ({ parts }: PostProps) => {
               <button
                 className="bg-green-500 px-2 py-1 rounded-md text-white font-semibold"
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                onClick={async (): Promise<void> => handleClick()}
+                onClick={(): Promise<void> => handleClick()}
               >
                 send
               </button>
@@ -95,7 +105,7 @@ const Home = ({ parts }: PostProps) => {
                   {index + 1}
                 </span>
                 <p className="bg-white px-12 py-8 rounded-lg w-80">
-                  {item.description}
+                  {item.name}{' '}{item.description}
                 </p>
               </div>
             </div>
