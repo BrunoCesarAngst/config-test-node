@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/BrunoCesarAngst/config-test-node#readme",
   "devDependencies": {
+    "@swc/jest": "^0.2.22",
     "@types/jest": "^29.0.0",
     "@types/node": "^18.7.15",
     "@types/react": "^18.0.18",
