@@ -1,10 +1,11 @@
 import { Parts } from '@prisma/client'
 
 export interface ISubmitPartUsecase {
+  id: number
   name: string
   description: string
-  createdAt?: Date
-  updatedAt?: Date
+  createdAt: number
+  updatedAt: number
 }
 
 export interface ISubmitPartRepository {
