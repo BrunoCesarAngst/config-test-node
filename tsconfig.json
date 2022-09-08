@@ -19,11 +19,11 @@
     "rootDirs": ["src", "src/tests"],
     "sourceMap": true,
     "baseUrl": "src",
-    "paths": { "@/*": ["*"], "@/tests/*": ["../tests/*"]},
+    "paths": { "@/*": ["*"], "@/tests/*": ["../tests/*"] },
     "noImplicitOverride": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

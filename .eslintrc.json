@@ -10,5 +10,9 @@
     "@typescript-eslint/return-await": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/explicit-function-return-type": "off"
+    // "no-unused-vars": [1, { "args": "after-used", "argsIgnorePattern": "^_" }]
+  },
+  "globals": {
+    "React": "readonly"
   }
 }

@@ -3,7 +3,7 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   transform: {
-    '^.+\\.(t|j)sx?$': ['@swc/jest']
+    '^.+\\.(t|j)sx?$': ['@swc/jest'],
   },
-  clearMocks: true
+  clearMocks: true,
 }

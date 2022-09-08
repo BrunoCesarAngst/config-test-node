@@ -47,9 +47,7 @@ export class PrismaPartRepository implements ISubmitPartRepository {
 
 const createPartSpy = jest.fn()
 
-const submitPartUsecase = new SubmitPartUsecase(
-  { create: createPartSpy }
-)
+const submitPartUsecase = new SubmitPartUsecase({ create: createPartSpy })
 
 describe('SubmitPartUsecase', (): void => {
   it('Should be called', async (): Promise<void> => {
@@ -62,23 +60,29 @@ describe('SubmitPartUsecase', (): void => {
   })
 
   it('Should be able to create an error-free piece', async (): Promise<void> => {
-    await expect(submitPartUsecase.execute({
-      name: 'test',
-      description: 'test description'
-    })).resolves.not.toThrow()
+    await expect(
+      submitPartUsecase.execute({
+        name: 'test',
+        description: 'test description'
+      })
+    ).resolves.not.toThrow()
   })
 
   it('Should not be able to create a part without name', async (): Promise<void> => {
-    await expect(submitPartUsecase.execute({
-      name: '',
-      description: 'test description'
-    })).rejects.toThrow()
+    await expect(
+      submitPartUsecase.execute({
+        name: '',
+        description: 'test description'
+      })
+    ).rejects.toThrow()
   })
 
   it('Should not be able to create a part without description', async (): Promise<void> => {
-    await expect(submitPartUsecase.execute({
-      name: 'test',
-      description: ''
-    })).rejects.toThrow()
+    await expect(
+      submitPartUsecase.execute({
+        name: 'test',
+        description: ''
+      })
+    ).rejects.toThrow()
   })
 })
