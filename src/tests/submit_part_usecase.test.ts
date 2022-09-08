@@ -1,16 +1,22 @@
-import { prisma } from '../prisma'
+import { Parts } from '@prisma/client'
 
 export interface ISubmitPartUsecase {
   name: string
   description: string
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export interface ISubmitPartRepository {
   create: (dataPart: ISubmitPartUsecase) => Promise<void>
+  getAll: (dataPart: ISubmitPartUsecase) => Promise<Parts[]>
 }
 
 export class SubmitPartRepository implements ISubmitPartRepository {
   async create (dataPart: ISubmitPartUsecase): Promise<void> {}
+  async getAll (dataPart: ISubmitPartUsecase): Promise<Parts[]> {
+    return await this.getAll(dataPart)
+  }
 }
 
 export class SubmitPartUsecase {
@@ -34,20 +40,11 @@ export class SubmitPartUsecase {
   }
 }
 
-export class PrismaPartRepository implements ISubmitPartRepository {
-  async create ({ name, description }: ISubmitPartUsecase): Promise<void> {
-    await prisma.parts.create({
-      data: {
-        name,
-        description
-      }
-    })
-  }
-}
-
 const createPartSpy = jest.fn()
 
-const submitPartUsecase = new SubmitPartUsecase({ create: createPartSpy })
+const submitPartUsecase = new SubmitPartUsecase({
+  create: createPartSpy, getAll: createPartSpy
+})
 
 describe('SubmitPartUsecase', (): void => {
   it('Should be called', async (): Promise<void> => {

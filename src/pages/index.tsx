@@ -1,5 +1,22 @@
-import React from 'react'
+import { getAll } from '@/../lib/db'
+import { GetServerSideProps } from 'next'
+import { ISubmitPartUsecase } from '../tests/submit_part_usecase.test'
 
-export default function Home () {
-  return <h1>Oi</h1>
+export const getServerSideProps: GetServerSideProps = async () => {
+  const parts = await getAll()
+  return {
+    props: {
+      parts
+    }
+  }
 }
+
+interface PostProps {
+  parts: ISubmitPartUsecase[]
+}
+
+const Home = ({ parts }: PostProps) => {
+  return <div>{JSON.stringify(parts, null, 4)}</div>
+}
+
+export default Home
